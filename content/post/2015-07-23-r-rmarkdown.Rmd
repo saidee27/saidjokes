@@ -1,0 +1,19 @@
+---
+title: "Winston Hodges mentions me in a blog"
+author: "Sai D"
+date: 2018-11-17T21:13:14-05:00
+categories: ["News"]
+tags: ["News"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+Winston Hodges mentions me in a blog post. He calls me 'newer Indian guy' because he didn't want to mess up my name. Here's what he had to say
+
+"I get to Club Heaven and Hell and am told by Tom that this is supposed to be a better turnout than the previous night... I’d say at its peak there were 40+ people ... He (Tom Mango, usual host) doesn’t feel well so he lets another comic host for him. I can’t remember his name but he is a newer Indian guy and he had some good jokes. The crowd dug him."
+
+I agree!! Read the rest of his blog here - https://winstonhcomedy.tumblr.com/post/180172514664/hdwdtw-119-1110-hot-child-in-the-city
+
+# Including Plots
