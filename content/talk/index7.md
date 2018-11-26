@@ -48,6 +48,10 @@ projects = []
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder. 
 
+[header]
+image = "Image-1.jpg"
+caption = ""  
+
   # Focal point (optional)
   # Options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
   focal_point = "Right"
