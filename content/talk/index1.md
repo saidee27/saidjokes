@@ -5,7 +5,7 @@ draft = false
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-time_start = 2018-11-16T20:00:00
+time_start = 2019-01-11T20:00:00
 #time_end = 2018-10-27T22:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
@@ -48,6 +48,9 @@ projects = []
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder. 
 
+[header]
+image = "comedyclubdc.jpg"
+caption = ""
   # Focal point (optional)
   # Options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
   focal_point = "Right"

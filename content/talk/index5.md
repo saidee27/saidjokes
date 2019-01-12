@@ -1,11 +1,11 @@
 +++
-title = "Ri Ra Georgetown, D.C"
+title = "Diskobar, Baltimore, MD"
 date = 2017-01-01T00:00:00  # Schedule page publish date.
 draft = false
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-time_start = 2018-11-07T20:00:00
+time_start = 2018-12-20T20:00:00
 #time_end = 2018-10-27T22:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
@@ -15,11 +15,11 @@ authors = []
 abstract = []
 
 # Name of event and optional event URL.
-event = "Underground Comedy DC"
-event_url = "https://www.undergroundcomedydc.com/ri-ra-irish-pub.html"
+event = "Comedy at Diskobar"
+event_url = "https://www.facebook.com/events/338683763353263/"
 
 # Location of event.
-location = "Washington, D.C"
+location = "Baltimore, MD"
 
 # Is this a selected talk? (true/false)
 # selected = false
@@ -47,6 +47,10 @@ projects = []
 
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder. 
+
+[header]
+image = "diskobar2.jpg"
+caption = ""
 
   # Focal point (optional)
   # Options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight

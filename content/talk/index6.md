@@ -1,11 +1,11 @@
 +++
-title = "The Broadway Comedy Club, New York, N"
+title = "The Broadway Comedy Club, New York, NY"
 date = 2017-01-01T00:00:00  # Schedule page publish date.
 draft = false
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-time_start = 2018-12-06T17:30:00
+time_start = 2018-12-08T17:30:00
 #time_end = 2018-10-27T22:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
