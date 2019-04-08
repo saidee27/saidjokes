@@ -1,6 +1,6 @@
 +++
 # Project title.
-title = "The BroadWay Comedy Club, New York, Dec 2018"
+title = "The DC Improv Comedy Club PUN DMV, Washington, D.C, Jan 2019"
 
 # Date this page was created.
 date = 2018-12-08T00:00:00
@@ -13,7 +13,7 @@ summary = ""
 tags = ["Video"]
 
 # Optional external URL for project (replaces project detail page).
-external_link = "https://youtu.be/BkLMirMgRwY"
+external_link = "https://youtu.be/h_-GYP8Wg94"
 
 # Featured image
 # To use, add an image named `featured.jpg/png` to your project's folder. 
