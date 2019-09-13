@@ -1,0 +1,107 @@
+---
+title: "Sentiment analysis of twitter reactions to Chappelle special"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+
+<p>I apologize. I feel strong peer pressure to have an opinion about the Chappelle special. I didn’t watch it yet but I did read the transcript. “He comes off guilty in the transcript”. By guilty I mean guilty of delivering on Chappelle-esque humor. I have plenty of other opinions but I am not going to share any of them here. In stead, I’m just going to try and summarize what the people tweeting about Chappelle felt in the immediate aftermath of the special. I used the ‘tidytext’ package for most of this.</p>
+<p>I searched for tweets with the words &quot;chappelle&quot; OR &quot;davechapelle&quot; OR &quot;Sticks and Stones&quot;; I got about 100,000 tweets that were not retweets and not tweets from news outlets or linked to news articles. I filtered retweets because I already have retweet counts for each tweet. I filtered tweets linking to news articles because form an original opinion people! Plus, he was also in the news for organizing a benefit concert near Dayton at the same time the special dropped; people were talking about that as well. Also, most people tweeting on the 26th were tweeting about watching or wanting to watch the special. Can’t believe these people waited till after watching it to make up their mind! Anyway, so I decided to just mine the tweets from August 27th through September 2nd.</p>
+<p>Here’s a wordcloud of the 50 most frequent words.</p>
+<pre class="r"><code>DCmenant %&gt;%
+  anti_join(custom_stop_words) %&gt;%
+  count(word) %&gt;%
+  with(wordcloud(word, n, max.words = 50))</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<p><img src="/post/DCmentions_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Just for future reference, if you’re tweeting about a standup special try not touse the words “stand up” or “standup” or “special”; makes for really uninteresting wordclouds. What I can infer from the wordcloud: People watching comedian @davechappelle’s stand up love funny jokes; Offensive jokes offended people.</p>
+<p>Here is a comparison wordcloud that shows the top negative and positive words. I used the ‘bing’ lexicon to identify negative and positive words. This is a funny lexicon which categorizes funny and joke as negative words!?</p>
+<pre class="r"><code>DCmenant %&gt;%
+  inner_join(get_sentiments(&quot;bing&quot;)) %&gt;%
+  count(word, wt=wt, sentiment, sort = TRUE) %&gt;%
+  acast(word ~ sentiment, value.var = &quot;n&quot;, fill = 0) %&gt;%
+  comparison.cloud(colors = c(&quot;gray20&quot;, &quot;gray80&quot;),
+                   max.words = 50)</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<p><img src="/post/DCmentions_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Is Chappelle now a stupid person with impunity or is he still the the perfect hilarious idol? Wordclouds tell you nothing, but they’re easy to generate and sometimes not too ugly.</p>
+<p>Here are the top 10 words used to describe the special on twitter. I used the ‘nrc’ lexicon this time.</p>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<pre><code>## Selecting by n</code></pre>
+<p><img src="/post/DCmentions_files/figure-html/binwordcounts-1.png" width="672" /></p>
+<p>And here are top 10 negative and positive sentiment words used to describe the special.</p>
+<pre class="r"><code>nrc_word_counts %&gt;%
+  group_by(sentiment) %&gt;%
+  top_n(10) %&gt;%
+  ungroup() %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = &quot;free&quot;, nrow=2) +
+  labs(y = &quot;Occurences&quot;,
+       x = NULL) +
+  coord_flip()</code></pre>
+<pre><code>## Selecting by n</code></pre>
+<p><img src="/post/DCmentions_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>A lot <strong>more ‘love’ than ‘hate’; more ‘hilarious’ than ‘upset’</strong>. Some of the negative words may have been used by people who were just talking about it. More on this later.</p>
+<p>The ‘nrc’ lexicon also classifies words into eight emotions. The most prevalent emotions, as measured by frequency of word usage, was either <strong>anticipation, anger, joy and sadness</strong> in that order. <strong>Not many were surprised. They clicked on his face, remember.</strong> I left out trust and fear from the plot as I don’t think they’re really applicable here.</p>
+<pre class="r"><code>ggplot(emotion_words_count, aes(x=Date, y=freq, color=sentiment, group=sentiment)) +
+  geom_line(size=1) +
+  geom_point(size=0.5) +
+  xlab(&quot;Day&quot;) +
+  ylab(&quot;Emotion words count (n)&quot;) +
+  ggtitle(&quot;Emotions expressed in days following special&quot;) +
+  theme(axis.text.x = element_text(angle = 90))</code></pre>
+<p><img src="/post/DCmentions_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Here’s a look at the top words that belong to to each of the top four emotions: anticipation, anger, joy and sadness.</p>
+<pre class="r"><code>nrc_adjs &lt;- get_sentiments(&quot;nrc&quot;) %&gt;% 
+  filter(sentiment  %in% c(&quot;anger&quot;, &quot;anticipation&quot;,&quot;joy&quot;,&quot;sadness&quot;))
+
+DCmenant %&gt;%
+  anti_join(custom_stop_words) %&gt;%
+  inner_join(nrc_adjs) %&gt;%
+  count(word, sentiment) %&gt;%
+  ungroup() %&gt;% 
+  group_by(sentiment) %&gt;%
+  top_n(10) %&gt;%
+  ungroup() %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = &quot;free_y&quot;, nrow=2) +
+  labs(y = &quot;Occurences&quot;,
+       x = NULL) +
+  coord_flip()</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;
+## Joining, by = &quot;word&quot;</code></pre>
+<pre><code>## Selecting by n</code></pre>
+<p><img src="/post/DCmentions_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><strong>Hilarious was the most used emotion word to describe the special by some distance.</strong></p>
+<p>So far we looked at individual words within tweets. But that doesn’t seem completely right. Certainly, we ought to be considering each tweet in its entirety. I used the R package ‘syuzhet’ to get a summary sentiment score for each tweet, with negative and positive values indicating bad and good vibes. I used the “afinn” method to get a sentiment score of each tweet. This looks up each word of a tweet in the “afinn” sentiment lexicon and calculates the score as a sum of the valences of the words divided by the number of words. Read more here - (<a href="https://arxiv.org/pdf/1103.2903.pdf" class="uri">https://arxiv.org/pdf/1103.2903.pdf</a>). Let’s use it to get a measure of the overall emotional valence in the tweets.</p>
+<p>Here’s a distribution of the sentiment scores of each tweeet. Most tweets were netural or did not contain any strong emotions. The average score was 0.54, indicating on average twitterverse viewed the special positively. If you weight the retweets by the number of times they were RTd, the average score turns negative, to -0.76!!!</p>
+<pre class="r"><code>ggplot(data=DCmenansent3) +
+  geom_histogram(mapping=aes(x=sentscore),bins=50) +
+  geom_freqpoly(mapping=aes(sentscore))</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="/post/DCmentions_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>I dug a little deeper and found that of the most RTd tweets with negative sentiment score most just seemed to be quoting the special, like these,</p>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+Chappelle said school shooting drills were stupid cause the shooter in the room learning the drills too LMFAOOOOOOOOOOOOO
+</p>
+— Pre K ?????? (<span class="citation">@stayfrea_</span>) <a href="https://twitter.com/stayfrea_/status/1166552505792135168?ref_src=twsrc%5Etfw">August 28, 2019</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>(<a href="https://twitter.com/HNICBrian/status/1166394265569832961" class="uri">https://twitter.com/HNICBrian/status/1166394265569832961</a>)</p>
+<p>or talking about, not in support of, the negative feedback, like this one,</p>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+Why is the Left constantly trying to cancel black men? Kevin Hart? Now, Dave Chappelle? <br><br>There’s a pattern here!
+</p>
+— CJ Pearson (<span class="citation">@thecjpearson</span>) <a href="https://twitter.com/thecjpearson/status/1166385121454411776?ref_src=twsrc%5Etfw">August 27, 2019</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>Just excluding these tweets, increased the wieghted mean sentiment score to 0.20 . In all, I think the overall reaction was positive but the sentiment analysis, which relies on mapping each word to an emotion, maybe underestimating it.</p>
+<p>In summary, I learnt that a lot of people on twitter enjoyed the special but maybe not as much as they enjoyed talking about it. Also, never upset the <a href="https://en.wikipedia.org/wiki/Alphabet_Inc.">Alphabet</a> people, they have all your data!</p>

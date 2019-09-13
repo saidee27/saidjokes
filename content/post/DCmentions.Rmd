@@ -1,0 +1,265 @@
+---
+title: "Sentiment analysis of twitter reactions to Chappelle special"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+I apologize. I feel strong peer pressure to have an opinion about the Chappelle special. I didn't watch it yet but I did read the transcript. "He comes off guilty in the transcript". By guilty I mean guilty of delivering on Chappelle-esque humor. I have plenty of other opinions but I am not going to share any of them here. In stead, I'm just going to try and summarize what the people tweeting about Chappelle felt in the immediate aftermath of the special. I used the 'tidytext' package for most of this.
+
+```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+library(lubridate)
+library(ggplot2)
+library(rtweet)
+library(tidyverse)
+library(tidyr)
+library(tidytext)
+library(textdata)
+library(wordcloud)
+library(chron)
+library(sentimentr)
+library(magrittr)
+library(syuzhet)
+library(reshape2)
+library(blogdown)
+```
+
+I searched for tweets with the words \"chappelle\" OR \"davechapelle\" OR \"Sticks and Stones\"; I got about 100,000 tweets that were not retweets and not tweets from news outlets or linked to news articles. I filtered retweets because I already have retweet counts for each tweet. I filtered tweets linking to news articles because form an original opinion people! Plus, he was also in the news for organizing a benefit concert near Dayton at the same time the special dropped; people were talking about that as well. Also, most people tweeting on the 26th were tweeting about watching or wanting to watch the special. Can't believe these people waited till after watching it to make up their mind! Anyway, so I decided to just mine the tweets from August 27th through September 2nd.
+
+Here's a wordcloud of the 50 most frequent words. 
+
+```{r wordcloud, include=FALSE}
+rm(list=ls())
+#create_token(app = "AnalyzeRetweetPromo", #consumer_key="2IsWmWYPAjJZGWKLllWb67Ae4", #consumer_secret="WnTwjElxkxKb61TCBIPBPoKTOKdLy1xFbXUSlddY7EcT5Yunwl", #access_token = "41976114-zjie2KPOPODBgEYspBp8PcPBV8EzgRuc1tGcSUM06", #access_secret = "oALdaUneNpPmXqz4IYNl6To1c7tlCqJs2bjokcyB1BfAG", set_renv #= TRUE)
+#since <- "2019-09-02"
+#until <- "2019-09-04"
+#DCmen8day<-search_tweets(q = "chappelle OR dave chappelle OR sticksandstones OR davechappelle OR \"Sticks and Stones\" -filter:retweets -filter:news", type="recent", n=1000000,since=since, until=until,lang = "en",retryonratelimit = TRUE)
+#DCmen6day<-search_tweets(q = "chappelle OR dave chappelle OR sticksandstones OR davechappelle OR \"Sticks and Stones\" -filter:retweets -filter:news", type="recent", n=1000000,since=since, until=until,lang = "en",retryonratelimit = TRUE)
+
+#DCmen4day<-search_tweets(q = "chappelle OR dave chappelle OR sticksandstones OR davechappelle OR \"Sticks and Stones\" -filter:retweets -filter:news", type="recent", n=1000000,since=since, until=until,lang = "en",retryonratelimit = TRUE)
+#write_as_csv(DCmen1day,"DCmen1day.csv")
+#write_as_csv(DCmen4day,"DCmen4day.csv")
+#write_as_csv(DCmen6day,"DCmen6day.csv")
+#write_as_csv(DCmen8day,"DCmen8day.csv")
+DCmen1day<-read_csv("DCmen1day.csv")
+DCmen4day<-read_csv("DCmen4day.csv")
+DCmen6day<-read_csv("DCmen6day.csv")
+DCmen8day<-read_csv("DCmen8day.csv")
+DCmenan<- as.data.frame(DCmen1day %>% 
+  select(status_id,text,retweet_count,favorite_count,followers_count,location,is_quote,verified,created_at,screen_name))
+head(DCmen1day)
+DCmenan4<- as.data.frame(DCmen4day %>% 
+  select(status_id,text,retweet_count,favorite_count,followers_count,location,is_quote,verified,created_at,screen_name))
+DCmenan6<- as.data.frame(DCmen6day %>% 
+  select(status_id,text,retweet_count,favorite_count,followers_count,location,is_quote,verified,created_at,screen_name))
+DCmenan8<- as.data.frame(DCmen8day %>% 
+  select(status_id,text,retweet_count,favorite_count,followers_count,location,is_quote,verified,created_at,screen_name))
+DCmenan1468<-bind_rows(DCmenan,DCmenan4,DCmenan6,DCmenan8)
+reg <- "([^A-Za-z\\d#@']|'(?![A-Za-z\\d#@]))"
+
+custom_stop_words <- bind_rows(tibble(word = c("chappelle","dave","chappelle's","sticks","stones","netflix","special","chapelle","#chapelle","davechappelle","#davechappelle","netflix","sticksandstones","#sticksandstones","nigga","don","didn"), 
+                                          lexicon = c("custom")), 
+                               stop_words)
+  
+DCmenant <- DCmenan1468 %>% select(text,retweet_count,favorite_count,created_at,location,followers_count,status_id) %>% mutate(wt=2*retweet_count + favorite_count +1) %>% filter(!str_detect(text, '^"')) %>%
+  mutate(text = str_replace_all(text, "https://t.co/[A-Za-z\\d]+|&amp;", "")) %>%
+  unnest_tokens(word, text, token = "regex", pattern = reg) %>%
+  filter(!word %in% custom_stop_words$word,
+         str_detect(word, "[a-z]"))
+```
+
+```{r}
+DCmenant %>%
+  anti_join(custom_stop_words) %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 50))
+```
+
+Just for future reference, if you're tweeting about a standup special try not touse the words "stand up" or "standup" or "special"; makes for really uninteresting wordclouds. What I can infer from the wordcloud:
+People watching comedian \@davechappelle's stand up love funny jokes; Offensive jokes offended people.
+
+Here is a comparison wordcloud that shows the top negative and positive words. I used the 'bing' lexicon to identify negative and positive words. This is a funny lexicon which categorizes funny and joke as negative words!?
+
+```{r}
+DCmenant %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, wt=wt, sentiment, sort = TRUE) %>%
+  acast(word ~ sentiment, value.var = "n", fill = 0) %>%
+  comparison.cloud(colors = c("gray20", "gray80"),
+                   max.words = 50)
+```
+
+Is Chappelle now a stupid person with impunity or is he still the the perfect hilarious idol? Wordclouds tell you nothing, but they're easy to generate and sometimes not too ugly.
+
+Here are the top 10 words used to describe the special on twitter. I used the 'nrc' lexicon this time.
+
+
+```{r binwordcounts, echo=FALSE}
+nrc_pos_neg <- get_sentiments("nrc") %>% 
+  filter(sentiment  %in% c("positive", "negative"))
+
+DCmenant %>%
+  anti_join(custom_stop_words) %>%
+  count(word, sort = TRUE) %>%
+  top_n(10) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_col(show.legend = FALSE) +
+  labs(y = "Occurences",
+       x = NULL) +
+  coord_flip()
+
+custom_stop_words <- bind_rows(tibble(word = c("chappelle","dave","chappelle's","sticks","stones","netflix","special","chapelle","#chapelle","davechappelle","#davechappelle","netflix","sticksandstones","#sticksandstones","nigga","don","didn","black","white","ass","culture","shit"), 
+                                          lexicon = c("custom")), 
+                               stop_words)
+
+```
+
+And here are top 10 negative and positive sentiment words used to describe the special.
+
+```{r include=FALSE}
+nrc_word_counts <- DCmenant %>%
+  anti_join(custom_stop_words) %>%
+  inner_join(nrc_pos_neg) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup()
+
+```
+
+```{r}
+
+nrc_word_counts %>%
+  group_by(sentiment) %>%
+  top_n(10) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free", nrow=2) +
+  labs(y = "Occurences",
+       x = NULL) +
+  coord_flip()
+```
+ 
+
+A lot **more 'love' than 'hate'; more 'hilarious' than 'upset'**. Some of the negative words may have been used by people who were just talking about it. More on this later.
+
+The 'nrc' lexicon also classifies words into eight emotions. The most prevalent emotions, as measured by frequency of word usage, was either **anticipation, anger, joy and sadness** in that order. **Not many were surprised. They clicked on his face, remember.** I left out trust and fear from the plot as I don't think they're really applicable here.
+
+```{r include=FALSE}
+nrc_all<- get_sentiments("nrc") %>% 
+  filter(sentiment  %in% c("anger", "disgust","joy","sadness","surprise","anticipation"))
+
+DCmenant2 <- DCmenant %>% separate(created_at, into = c("Date", "Time"), sep = " (?=[^ ]+$)")
+
+emotion_words_count <- DCmenant %>%
+  separate(created_at, into = c("Date", "Time"), sep = " (?=[^ ]+$)") %>%
+  anti_join(custom_stop_words) %>%
+  inner_join(nrc_all)  %>%
+  group_by(Date, sentiment) %>%
+  summarize(freq = n()) %>%
+  ungroup()
+
+```
+
+```{r}
+
+ggplot(emotion_words_count, aes(x=Date, y=freq, color=sentiment, group=sentiment)) +
+  geom_line(size=1) +
+  geom_point(size=0.5) +
+  xlab("Day") +
+  ylab("Emotion words count (n)") +
+  ggtitle("Emotions expressed in days following special") +
+  theme(axis.text.x = element_text(angle = 90))
+
+```
+
+Here's a look at the top words that belong to to each of the top four emotions: anticipation, anger, joy and sadness.
+
+```{r}
+
+nrc_adjs <- get_sentiments("nrc") %>% 
+  filter(sentiment  %in% c("anger", "anticipation","joy","sadness"))
+
+DCmenant %>%
+  anti_join(custom_stop_words) %>%
+  inner_join(nrc_adjs) %>%
+  count(word, sentiment) %>%
+  ungroup() %>% 
+  group_by(sentiment) %>%
+  top_n(10) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y", nrow=2) +
+  labs(y = "Occurences",
+       x = NULL) +
+  coord_flip()
+
+```
+
+**Hilarious was the most used emotion word to describe the special by some distance.**
+
+So far we looked at individual words within tweets. But that doesn't seem completely right. Certainly, we ought to be considering each tweet in its entirety. I used the R package 'syuzhet' to get a summary sentiment score for each tweet, with negative and positive values indicating bad and good vibes. I used the "afinn" method to get a sentiment score of each tweet. This looks up each word of a tweet in the "afinn" sentiment lexicon and calculates the score as a sum of the valences of the words divided by the number of words. Read more here - (https://arxiv.org/pdf/1103.2903.pdf). Let's use it to get a measure of the overall emotional valence in the tweets.
+
+Here's a distribution of the sentiment scores of each tweeet. Most tweets were netural or did not contain any strong emotions. The average score was 0.54, indicating on average twitterverse viewed the special positively. If you weight the retweets by the number of times they were RTd, the average score turns negative, to -0.76!!!
+
+```{r, include = FALSE}
+DCmenansent<- DCmenan1468 %>% mutate(tsentiment=get_sentiment(text,method="afinn")) #sentimentr::get_sentences(text) %>% 
+
+DCmenansent2<- DCmenansent %>% group_by(status_id,retweet_count,favorite_count,verified,followers_count) %>% summarize(sentscore = sum(tsentiment))
+
+DCmenansent3 <- DCmenansent2 %>% mutate(is_rt = retweet_count > 0, wt= retweet_count + 1)
+
+weighted.mean(x=DCmenansent3$sentscore,w=DCmenansent3$wt)
+
+```
+```{r}
+ggplot(data=DCmenansent3) +
+  geom_histogram(mapping=aes(x=sentscore),bins=50) +
+  geom_freqpoly(mapping=aes(sentscore))
+
+```
+
+
+I dug a little deeper and found that of the most RTd tweets with negative sentiment score most just seemed to be quoting the special, like these,
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Chappelle said school shooting drills were stupid cause the shooter in the room learning the drills too LMFAOOOOOOOOOOOOO</p>&mdash; Pre K ?????? (@stayfrea_) <a href="https://twitter.com/stayfrea_/status/1166552505792135168?ref_src=twsrc%5Etfw">August 28, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+(https://twitter.com/HNICBrian/status/1166394265569832961)
+
+or talking about, not in support of, the negative feedback, like this one,
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Why is the Left constantly trying to cancel black men? Kevin Hart? Now, Dave Chappelle? <br><br>There's a pattern here!</p>&mdash; CJ Pearson (@thecjpearson) <a href="https://twitter.com/thecjpearson/status/1166385121454411776?ref_src=twsrc%5Etfw">August 27, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+```{r include=FALSE}
+DCmenansent3 %>% filter(!status_id %in% c("x1166552505792135168","x1166394265569832961","x1166385121454411776")) %>% ungroup() %>% summarise(mean=weighted.mean(x=sentscore,w=wt))
+
+
+```
+
+
+Just excluding these tweets, increased the wieghted mean sentiment score to 0.20 . In all, I think the overall reaction was positive but the sentiment analysis, which relies on mapping each word to an emotion, maybe underestimating it.
+
+In summary, I learnt that a lot of people on twitter enjoyed the special but maybe not as much as they enjoyed talking about it. Also, never upset the [Alphabet](https://en.wikipedia.org/wiki/Alphabet_Inc.) people, they have all your data!
+
+
+```{r, include=FALSE}
+
+head(DCmenansent3)
+
+DCmenansent3 %>% inner_join(select(DCmenan1468,c("status_id","text")),by="status_id") %>% filter(sentscore < 0) %>% ungroup() %>% top_n(n=10,wt=retweet_count)
+
+
+#head(DCmenansent3)
+#ggplot(DCmenansent3) +
+#  geom_smooth(aes(y=sentscore,x=followers_count))
+
+#DCmenant %>% filter(word %in% c("hilarious","upset"))
+
+```
+

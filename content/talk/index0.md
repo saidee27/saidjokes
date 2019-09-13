@@ -1,11 +1,11 @@
 +++
-title = "Town Tavern, D.C"
+title = "Charm City Comedy Festival (2019)"
 date = 2017-01-01T00:00:00  # Schedule page publish date.
-draft = true
+draft = false
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-time_start = 2019-01-10T20:00:00
+time_start = 2019-05-09T20:00:00
 #time_end = 2018-10-27T22:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
@@ -15,11 +15,11 @@ authors = []
 abstract = []
 
 # Name of event and optional event URL.
-event = "ADAMS MORGAN COMEDY NIGHT"
-event_url = "http://www.capitallaughs.com/norm.html"
+event = "Charm City Comedy Festival"
+event_url = "https://www.charmcitycomedyproject.com/festival"
 
 # Location of event.
-location = "Washington, D.C"
+location = "Baltimore, MD"
 
 # Is this a selected talk? (true/false)
 # selected = false

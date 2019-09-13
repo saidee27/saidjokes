@@ -1,7 +1,7 @@
 +++
-title = "Club Heaven and Hell, D.C"
-date = 2017-01-01T00:00:00  # Schedule page publish date.
-draft = true
+title = "LIT (Laugh Index Theater) Fest 2019"
+date = 2019-06-02T00:00:00  # Schedule page publish date.
+draft = false
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
@@ -15,7 +15,7 @@ authors = []
 abstract = []
 
 # Name of event and optional event URL.
-event = "Comedy Club DC"
+event = "LIT (Laugh Index Theater) Fest 2019"
 event_url = "https://www.comedyclubdc.com/"
 
 # Location of event.
