@@ -19,8 +19,6 @@ output:
   count(word) %&gt;%
   with(wordcloud(word, n, max.words = 50))</code></pre>
 <pre><code>## Joining, by = &quot;word&quot;</code></pre>
-<pre><code>## Warning in wordcloud(word, n, max.words = 50): people could not be fit on
-## page. It will not be plotted.</code></pre>
 <p><img src="/post/DCmentions_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Just for future reference, if you’re tweeting about a standup special try not touse the words “stand up” or “standup” or “special”; makes for really uninteresting wordclouds. What I can infer from the wordcloud: People watching comedian @davechappelle’s stand up love funny jokes; Offensive jokes offended people.</p>
 <p>Here is a comparison wordcloud that shows the top negative and positive words. I used the ‘bing’ lexicon to identify negative and positive words. This is a funny lexicon which categorizes funny and joke as negative words!?</p>
