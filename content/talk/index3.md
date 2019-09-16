@@ -1,11 +1,11 @@
 +++
-title = "The Big Hunt, D.C"
+title = "Marx Cafe"
 date = 2017-01-01T00:00:00  # Schedule page publish date.
 draft = false
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-time_start = 2018-12-01T20:00:00
+time_start = 2019-09-27T22:00:00
 #time_end = 2018-10-27T22:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
@@ -15,8 +15,8 @@ authors = []
 abstract = []
 
 # Name of event and optional event URL.
-event = "Underground Comedy at The Big Hunt DC"
-event_url = "https://www.undergroundcomedydc.com/big-hunt.html"
+event = "Marx Cafe Presents The Comedy Manifesto"
+#event_url = "https://www.undergroundcomedydc.com/big-hunt.html"
 
 # Location of event.
 location = "Washington, D.C"

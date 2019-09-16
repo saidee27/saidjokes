@@ -1,11 +1,11 @@
 +++
-title = "Wonderland Ballroom, D.C"
+title = "Saint Yves"
 date = 2017-01-01T00:00:00  # Schedule page publish date.
 draft = false
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-time_start = 2018-11-09T20:00:00
+time_start = 2019-09-29T18:00:00
 #time_end = 2018-10-27T22:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
@@ -15,7 +15,7 @@ authors = []
 abstract = []
 
 # Name of event and optional event URL.
-event = "Wokety Woke, Woker than WokeComedy Show"
+event = "APA AF Comedy Showcase"
 event_url = "http://www.thewonderlandballroom.com/calendar/"
 
 # Location of event.

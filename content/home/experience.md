@@ -3,7 +3,7 @@
 widget = "experience"  # Do not modify this line!
 active = false  # Activate this widget? true/false
 
-title = "Experience"
+title = "Festivals / Comeptitions"
 subtitle = ""
 
 # Order that this section will appear in.
@@ -19,16 +19,40 @@ date_format = "2006-01-02"
 #   Leave `date_end` empty if it's your current employer.
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 [[experience]]
-  title = "Dojo Comedy 12 Hour Marathon 2018"
-  company = "Washington, D.C."
-  date_start = "2018-10-05"
-  date_end = "2018-10-06"
+  title = "Baltimore Comedy Festival (2019)"
+  company = "Baltimore, MD"
+  date_start = "2019-08-31"
+  date_end = "2019-08-31"
   
 [[experience]]
-  title = "DMV Comedy Wars"
+  title = "6th Borough Comedy Festival (2019)"
+  company = "Jersey City, NJ"
+  date_start = "2019-06-10"
+  date_end = "2019-06-10"
+  
+[[experience]]
+  title = "LIT (Laugh Index Theater) Fest (2019)"
   company = "Washington, D.C."
-  date_start = "2018-10-15"
-  date_end = "2018-10-15"
+  date_start = "2019-01-11"
+  date_end = "2019-01-11"
+  
+[[experience]]
+  title = "Charm City Comedy Festival (2019)"
+  company = "Baltimore, MD"
+  date_start = "2019-05-09"
+  date_end = "2019-05-09"
+
+[[experience]]
+  title = "Gilda's LaughFest"
+  company = "Grand Rapids, MI"
+  date_start = "2019-03-09"
+  date_end = "2019-03-09"
+  
+[[experience]]
+  title = "DC Improv PUN DMV - Freestyle Winner"
+  company = "Washington, D.C."
+  date_start = "2019-01-11"
+  date_end = "2019-01-11"
 
 #[[experience]]
 # title = "Professor"

@@ -8,10 +8,10 @@ title = "Recent Appearances"
 subtitle = ""
 
 # Order that this section will appear in.
-weight = 30
+weight = 40
 
 # Number of talks to list.
-count = 12
+count = 5
 
 # List format.
 #   0 = Simple

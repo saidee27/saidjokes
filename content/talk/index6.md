@@ -1,11 +1,11 @@
 +++
-title = "The Broadway Comedy Club, New York, NY"
+title = "DC Comedy Loft"
 date = 2017-01-01T00:00:00  # Schedule page publish date.
 draft = false
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-time_start = 2018-12-08T17:30:00
+time_start = 2019-09-25T20:00:00
 #time_end = 2018-10-27T22:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
@@ -15,8 +15,8 @@ authors = []
 abstract = []
 
 # Name of event and optional event URL.
-event = "The Broadway Comedy Club, New York, NY"
-event_url = "https://www.broadwaycomedyclub.com/calendar/"
+event = "The Comedy Loft Showcase"
+#event_url = "https://www.broadwaycomedyclub.com/calendar/"
 
 # Location of event.
 location = "Washington, D.C"
@@ -47,12 +47,12 @@ projects = []
 
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder.
-[header]
-image = "Image-2.jpg"
-caption = ""
+#[header]
+#image = "Image-2.jpg"
+#caption = ""
 
-  # Focal point (optional)
-  # Options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
-  focal_point = "Right"
+#  # Focal point (optional)
+#  # Options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
+#  focal_point = "Right"
 +++
 

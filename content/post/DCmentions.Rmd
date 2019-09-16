@@ -1,5 +1,9 @@
 ---
 title: "Sentiment analysis of twitter reactions to Chappelle special"
+author: "Sai D"
+date: 2019-09-15T21:13:14-05:00
+categories: ["Analysis"]
+tags: ["Analysis"]
 output:
   html_document: default
   pdf_document: default

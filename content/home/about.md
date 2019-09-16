@@ -18,6 +18,6 @@ weight = 5
 
 
 # Biography
-Sai D is a mediocre human (co-median) from Chennai, India. As an immigrant his act is comprised of puns, paraprodoskians, non sequitirs and other words he can neither spell nor pronounce. He has performed at festivals and venues across the United States including the DC Improv Comedy Club, Comedy Loft DC, Broadway Comedy Club and Ann Arbor Comedy Showcase.
+Sai D is a mediocre human (co-median) from Chennai, India. As an immigrant his act is comprised of puns, paraprodoskians, non sequitirs and other words he can neither spell nor pronounce. When he's not busy watching cricket, he prefers to be out entertaining crowds at local venues and festivals all over the country with his wordplay. He has performed at comedy venues across the United States including the DC Comedy Loft, Washington, D.C, The Broadway Comedy Club, New York and the Ann Arbor Comedy Showcase, Ann Arbor, MI.
 
 His parents would like you to know that in the daytime, Sai is a biostatistician. 
